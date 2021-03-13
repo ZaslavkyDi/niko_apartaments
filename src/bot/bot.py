@@ -1,7 +1,8 @@
 import telegram
+from loguru import logger
 from telegram import User
 
-from ..core.config import app_settings
+from src.core.config import app_settings
 
 
 class BotService:
@@ -10,4 +11,5 @@ class BotService:
         self._bot = telegram.Bot(token=app_settings.bot_api_token)
 
     def get_bot_info(self) -> User:
+        logger.info('Test')
         return self._bot.get_me()

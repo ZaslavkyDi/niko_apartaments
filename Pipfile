@@ -9,6 +9,8 @@ verify_ssl = true
 python-telegram-bot = "*"
 pydantic = "*"
 mypy = "*"
+loguru = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.9"

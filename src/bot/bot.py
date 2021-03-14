@@ -1,15 +1,30 @@
-import telegram
-from loguru import logger
-from telegram import User
+from asyncio import sleep
 
+from aiogram import Bot, Dispatcher
+from loguru import logger
+
+from src.bot.service import FlatBotService
 from src.core.config import app_settings
 
+app_bot = Bot(token=app_settings.bot_api_token)
+bot_dispatcher = Dispatcher(bot=app_bot)
+bot_service = FlatBotService()
 
-class BotService:
 
-    def __init__(self):
-        self._bot = telegram.Bot(token=app_settings.bot_api_token)
+async def __publish_data_if_exist() -> None:
+    flats = await bot_service.get_fresh_flats()
+    for flat in flats:
+        message = bot_service.generate_bot_message(flat)
+        await app_bot.send_message(
+            chat_id=app_settings.bot_channel_id,
+            text=message
+        )
+        await bot_service.mark_flat_as_processed(flat)
 
-    def get_bot_info(self) -> User:
-        logger.info('Test')
-        return self._bot.get_me()
+
+async def run_bot() -> None:
+    logger.info('Run bot!')
+    while True:
+        logger.info('Check updates')
+        await __publish_data_if_exist()
+        await sleep(10)

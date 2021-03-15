@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 from urllib.parse import urljoin
 
 from loguru import logger

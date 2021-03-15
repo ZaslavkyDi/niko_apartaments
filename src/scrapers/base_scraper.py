@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Union
+from typing import List, Union, Generic, TypeVar, Dict
 
 from httpx import Response
 from loguru import logger
@@ -7,12 +7,16 @@ from loguru import logger
 from src.db.models import Flat
 from src.scrapers.utils.downloader import AsyncDownloader
 
+Parser = TypeVar('Parser')
 
-class BaseScraper(ABC):
 
-    def __init__(self, listing_url: str, downloader: AsyncDownloader):
+class BaseScraper(ABC, Generic[Parser]):
+    REQUEST_PARAMS: Dict = {}
+
+    def __init__(self, listing_url: str, downloader: AsyncDownloader, parser: Parser):
         self._listing_url = listing_url
         self._downloader = downloader
+        self._parser = parser
 
     @property
     def listing_url(self) -> str:

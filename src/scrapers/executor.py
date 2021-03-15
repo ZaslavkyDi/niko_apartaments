@@ -4,10 +4,12 @@ from typing import Dict
 from loguru import logger
 from tortoise.exceptions import IntegrityError
 
+from src.core.config import scrapers_settings
 from src.core.enums import ScrapersEnum
 from src.db.models import Flat
 from src.scrapers.base_scraper import BaseScraper
 from src.scrapers.besplatka.scraper import BesplatkaScraper
+from src.scrapers.domria.scraper import DomriaScraper
 from src.scrapers.utils.downloader import AsyncDownloader
 
 
@@ -21,24 +23,22 @@ class ScraperExecutor:
         while True:
             for scraper in list(ScrapersEnum):
                 await self._scrape_and_save(scraper_name=scraper)
-                await sleep(10)
+                await sleep(scrapers_settings.scraper_sleep_seconds)
 
     async def _scrape_and_save(self, scraper_name: ScrapersEnum) -> None:
-        logger.info(f'Start {scraper_name.besplatka}!')
-        try:
-            scraper = self._scrapers[scraper_name]
-            scraped_flats = await scraper.scrape()
-            [await self._save_flat_silently(flat) for flat in scraped_flats]
+        logger.info(f'Start {scraper_name}!')
 
-        except KeyError:
-            pass
+        scraper = self._scrapers[scraper_name]
+        scraped_flats = await scraper.scrape()
+        [await self._save_flat_silently(flat) for flat in scraped_flats]
 
-        logger.info(f'Start {scraper_name.besplatka}!')
+        logger.info(f'End {scraper_name}!')
 
     @staticmethod
     def _init_scrapers(downloader: AsyncDownloader, **kwargs) -> Dict[ScrapersEnum, BaseScraper]:
         return {
             ScrapersEnum.besplatka: BesplatkaScraper(downloader=downloader),
+            ScrapersEnum.domria: DomriaScraper(downloader=downloader),
         }
 
     @staticmethod

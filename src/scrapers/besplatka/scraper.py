@@ -16,9 +16,9 @@ class BesplatkaScraper(BaseScraper):
     def __init__(self, downloader: AsyncDownloader):
         super().__init__(
             listing_url=scrapers_settings.besplatka_listing_url,
-            downloader=downloader
+            downloader=downloader,
+            parser=BesplatkaParse()
         )
-        self._parser = BesplatkaParse()
 
     async def scrape(self) -> List[Flat]:
         response = await self._downloader.get(url=self.listing_url, params=self.REQUEST_PARAMS)

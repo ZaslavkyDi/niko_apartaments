@@ -6,7 +6,15 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-python-telegram-bot = "*"
+pydantic = "*"
+mypy = "*"
+loguru = "*"
+python-dotenv = "*"
+pytelegrambotapi = "*"
+aiogram = "*"
+tortoise-orm = {extras = ["asyncpg"], version = "*"}
+httpx = "*"
+parsel = "*"
 
 [requires]
 python_version = "3.9"

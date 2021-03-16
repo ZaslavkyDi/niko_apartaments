@@ -41,7 +41,7 @@ class DomriaScraper(BaseScraper[DomriaParse]):
             await self.check_response(response)
 
             flat_json = response.json()
-            flat = self._parser.parse_flat(content=flat_json, url=flat_url)
+            flat = self._parser.parse_flat(content=flat_json)
             flats.append(flat)
 
         return flats

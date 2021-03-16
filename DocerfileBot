@@ -1,0 +1,16 @@
+FROM python:3.9
+
+RUN apt-get update
+RUN pip install --upgrade pip
+
+WORKDIR ./app
+
+COPY . .
+
+RUN ls
+RUN pwd
+
+RUN pip install pipenv
+RUN pipenv install --system --deploy --ignore-pipfile
+
+CMD ["python", "run_bot.py"]

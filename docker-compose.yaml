@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+
+  bot:
+    build:
+      context: .
+      dockerfile: DocerfileBot
+    image: niko_apartaments_telegram_bot
+    container_name: 'niko-flat-telegram-bot'
+    restart: on-failure
+    env_file:
+      - ./.env
+    network_mode: host
+
+  scraper:
+    build:
+      context: .
+      dockerfile: DocerfileScraper
+    image: niko_apartaments_scraper
+    container_name: 'niko-flat-scraper'
+    restart: on-failure
+    network_mode: host

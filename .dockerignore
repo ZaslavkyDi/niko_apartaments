@@ -1,0 +1,4 @@
+.mypy_cache
+deploy
+README.md
+.env.sample

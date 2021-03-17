@@ -44,7 +44,7 @@ class DomriaScraper(BaseScraper[DomriaParse]):
             flat = self._parser.parse_flat(content=flat_json)
             flats.append(flat)
 
-        return flats
+        return [i for i in flats if i]
 
     async def _scrape_flats_ids(self) -> List[int]:
         response = await self._downloader.get(url=self.listing_url, params=self.REQUEST_PARAMS)

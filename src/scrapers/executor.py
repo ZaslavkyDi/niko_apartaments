@@ -22,8 +22,15 @@ class ScraperExecutor:
     async def run_scraping(self) -> None:
         while True:
             for scraper in list(ScrapersEnum):
-                await self._scrape_and_save(scraper_name=scraper)
-                await sleep(scrapers_settings.scraper_sleep_seconds)
+                await self._run_scraper(scraper)
+
+    @logger.catch
+    async def _run_scraper(self, scraper: ScrapersEnum) -> None:
+        try:
+            await self._scrape_and_save(scraper_name=scraper)
+            await sleep(scrapers_settings.scraper_sleep_seconds)
+        except Exception as e:
+            logger.error(e)
 
     async def _scrape_and_save(self, scraper_name: ScrapersEnum) -> None:
         logger.info(f'Start {scraper_name}!')

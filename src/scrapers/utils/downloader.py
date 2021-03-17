@@ -2,6 +2,8 @@ from typing import Union, Dict, Any
 
 from httpx import AsyncClient, Response
 
+from src.core.config import app_settings
+
 
 class AsyncDownloader:
 
@@ -48,7 +50,7 @@ class AsyncDownloader:
             headers: Dict[str, str] = None,
             cookies: Dict[str, str] = None,
     ) -> Response:
-        async with AsyncClient() as client:
+        async with AsyncClient(timeout=app_settings.request_time_out_seconds) as client:
             return await client.request(
                 method=method,
                 url=url,

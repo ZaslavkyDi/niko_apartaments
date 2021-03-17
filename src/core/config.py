@@ -10,6 +10,7 @@ dotenv.load_dotenv(env_file_path)
 class AppSettings(BaseSettings):
     debug: bool = os.getenv('DEBUG', False)
     db_url: str = os.getenv('DB_URL')
+    request_time_out_seconds: int = os.getenv('REQUEST_TIMEOUT_SECONDS', 30)
 
 
 class BotSettings(AppSettings):

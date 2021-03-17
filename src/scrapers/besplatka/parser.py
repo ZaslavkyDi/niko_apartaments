@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import List, Optional
 from urllib.parse import urljoin
 
 from loguru import logger
@@ -32,11 +32,13 @@ class BesplatkaParse:
         url = self._parse_url(flat_elem, url=url)
         price = self._parse_price(flat_elem)
 
-        if price:
-            return Flat(
-                url=url,
-                price=price
-            )
+        if not price:
+            return None
+
+        return Flat(
+            url=url,
+            price=price
+        )
 
     @logger.catch
     def _parse_url(self, flat_elem: Selector, url: str) -> str:

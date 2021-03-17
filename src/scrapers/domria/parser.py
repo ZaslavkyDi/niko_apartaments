@@ -15,11 +15,13 @@ class DomriaParse:
         url = self._parse_url(content)
         price = content.get('price')
 
-        if price:
-            return Flat(
-                url=url,
-                price=price
-            )
+        if not price:
+            return None
+
+        return Flat(
+            url=url,
+            price=price
+        )
 
     @logger.catch()
     def _parse_url(self, content: Dict) -> str:

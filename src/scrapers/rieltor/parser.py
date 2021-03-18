@@ -7,7 +7,7 @@ from parsel import Selector
 from src.db.models import Flat
 
 
-class RealtorParse:
+class RieltorParse:
     NEXT_PAGE_URL_XPATH = '//ul[@class="pagination_custom"]/li[@class="active"]/following-sibling::li[1]/a/@href'
     FLAT_ITEM_XPATH = '//div[@class="catalog-item"]'
     FLAT_URL_XPATH = './/h2/a/@href'

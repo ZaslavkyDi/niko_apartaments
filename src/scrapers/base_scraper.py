@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List, Union, Generic, TypeVar, Dict
 
 from httpx import Response
@@ -22,9 +22,27 @@ class BaseScraper(ABC, Generic[Parser]):
     def listing_url(self) -> str:
         return self._listing_url
 
-    @abstractmethod
     async def scrape(self) -> List[Flat]:
-        pass
+        response = await self._downloader.get(url=self.listing_url, params=self.REQUEST_PARAMS)
+        await self.check_response(response)
+        flats = []
+        parsed_flats = self._parser.parse_listing(
+            content=response.text,
+            url=str(response.url)
+        )
+        flats.extend(parsed_flats)
+
+        while next_page_url := self._parser.parse_next_page_url(content=response.text, url=str(response.url)):
+            parsed_flats = self._parser.parse_listing(
+                content=response.text,
+                url=str(response.url)
+            )
+            flats.extend(parsed_flats)
+
+            response = await self._downloader.get(url=next_page_url)
+            await self.check_response(response)
+
+        return flats
 
     @staticmethod
     async def check_response(

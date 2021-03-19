@@ -24,6 +24,7 @@ class ScrapersSettings(AppSettings):
     besplatka_listing_url: str = os.getenv('BESPLATKA_LISTING_URL')
     domria_listing_url: str = os.getenv('DOMRIA_LISTING_URL')
     rieltor_listing_url: str = os.getenv('RIELTOR_LISTING_URL')
+    obyava_listing_url: str = os.getenv('OBYAVA_LISTING_URL')
 
 
 app_settings = AppSettings()

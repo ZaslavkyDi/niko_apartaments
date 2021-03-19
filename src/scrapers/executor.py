@@ -10,6 +10,7 @@ from src.db.models import Flat
 from src.scrapers.base_scraper import BaseScraper
 from src.scrapers.besplatka.scraper import BesplatkaScraper
 from src.scrapers.domria.scraper import DomriaScraper
+from src.scrapers.obyava.scraper import ObyavaScraper
 from src.scrapers.rieltor.scraper import RieltorScraper
 from src.scrapers.utils.downloader import AsyncDownloader
 
@@ -45,9 +46,10 @@ class ScraperExecutor:
     @staticmethod
     def _init_scrapers(downloader: AsyncDownloader, **kwargs) -> Dict[ScrapersEnum, BaseScraper]:
         return {
-            ScrapersEnum.besplatka: BesplatkaScraper(downloader=downloader),
-            ScrapersEnum.domria: DomriaScraper(downloader=downloader),
-            ScrapersEnum.rieltor: RieltorScraper(downloader=downloader),
+            # ScrapersEnum.besplatka: BesplatkaScraper(downloader=downloader),
+            # ScrapersEnum.domria: DomriaScraper(downloader=downloader),
+            # ScrapersEnum.rieltor: RieltorScraper(downloader=downloader),
+            ScrapersEnum.obyava: ObyavaScraper(downloader=downloader),
         }
 
     @staticmethod

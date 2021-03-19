@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 from loguru import logger
 from parsel import Selector
 
+from src.core.config import scrapers_settings
 from src.db.models import Flat
 
 
@@ -20,7 +21,7 @@ class ObyavaParse:
         flats_elems = root.xpath(self.FLAT_ITEM_XPATH)
 
         flats = [self._parse_flat(elem, url) for elem in flats_elems]
-        return [item for item in flats if item]
+        return [item for item in flats if item and item.price <= scrapers_settings.max_flat_price]
 
     def _parse_flat(self, flat_elem: Selector, url: str) -> Optional[Flat]:
         url = self._parse_url(flat_elem, url=url)
